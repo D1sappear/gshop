@@ -1,0 +1,35 @@
+1. 给手机号码输入框添加v-model监听属性phone
+   <input type="tel" maxlength="11" placeholder="手机号" v-model="phone">
+
+   data () {
+     return {
+       loginWay: true, // true代表短信登录， false代表密码登录
+       phone: '', // 手机号码
+     }
+   }
+
+2. 给验证码按钮添加自定义样式 right_phone,规定当其为true时，验证码按钮字体变黑色
+   根据监听属性phone的值来定义一个计算属性返回一个布尔类型的值来赋给right_phone
+   <button disabled="disabled" class="get_verification" :class="{right_phone: rightPhone}">获取验证码</button>
+
+   定义计算属性
+   computed: {
+     rightPhone () {
+       return /^1\d{10}$/.test(this.phone) // 返回true或false
+     }
+   }
+
+3. 定义right_phone的样式
+   找到样式get_verification
+   并集用 &
+   .get_verification
+     position absolute
+     top 50%
+     right 10px
+     transform translateY(-50%)
+     border 0
+     color #ccc
+     font-size 14px
+     background transparent
+     &.right_phone
+        color black

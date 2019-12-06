@@ -1,0 +1,58 @@
+1. 在输入手机号码准备获取验证码时，按钮应该存在 即disabled为false
+    强制绑定  :disabled="!rightPhone"
+    <button :disabled="!rightPhone" class="get_verification"
+            :class="{right_phone: rightPhone}">获取验证码</button>
+
+2. 给按钮绑定点击监听
+    <button :disabled="!rightPhone" class="get_verification"
+            :class="{right_phone: rightPhone}" @click.prevent="getCode">获取验证码</button>
+
+            // prevent防止自动提交表单
+
+    定义方法
+    methods: {
+      getCode () {
+        // 点击按钮后
+        // (1)启动倒计时
+
+        // (2)发送ajax请求(向指定手机号发送验证码短信)
+      }
+    }
+
+3. 需要一个计时属性 computeTime
+   定义属性
+     data () {
+       return {
+         loginWay: true, // true代表短信登录， false代表密码登录
+         phone: '', // 手机号码
+         computeTime: 0, // 计时的时间
+       }
+     },
+
+4. 编写getCode代码
+   // 点击按钮后
+   // (1)启动倒计时
+   // (2)发送ajax请求(向指定手机号发送验证码短信)
+   methods: {
+     getCode () {
+       // 防止重复开启定时，只有当computeTime不存在时才开启定时器
+       if (!this.computeTime) {
+         // 设置总计时
+         this.computeTime = 30
+         // 开启定时器
+         const setIntervalId = setInterval(() => {
+            this.computeTime--
+            // 当计时为0时，停止定时器
+            if (this.computeTime <= 0) {
+              clearInterval(setIntervalId)
+            }
+         },1000)
+         // 发送ajax请求(向指定手机号发送验证码短信)
+       }
+     }
+   }
+
+5. 修改HTML部分文本
+   当computeTime存在且大于0时，文本应该切换为`已发送(${computeTime}s)`
+   <button :disabled="!rightPhone" class="get_verification"
+           :class="{right_phone: rightPhone}" @click.prevent="getCode">{{computeTime > 0 ? `已发送(${computeTime}s)` : '获取验证码'}}</button>

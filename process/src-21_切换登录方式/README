@@ -1,0 +1,26 @@
+登录路由Login组件的两种登录方式的显示隐藏是通过样式 "on" 来决定
+思路
+  已知样式名，通过对象方法来切换两种登录方式
+  1. 定义一个变量loginWay
+      data () {
+        return {
+          loginWay: true // true代表短信登录， false代表密码登录
+        }
+      }
+     规定loginWay为true时是短信登录
+     规定loginWay为false时是密码登录
+
+  2. 强制绑定样式，将loginWay和!loginWay分别赋值给on
+     <a href="javascript:;" :class="{on: loginWay}" >短信登录</a>
+     <a href="javascript:;" :class="{on: !loginWay}" >密码登录</a>
+
+  3. 绑定点击监听
+     <a href="javascript:;" :class="{on: loginWay}" @click="loginWay=true">短信登录</a>
+     <a href="javascript:;" :class="{on: !loginWay}" @click="loginWay=false">密码登录</a>
+
+     一旦点击短信登录，则把true赋值给loginWay，此时loginWay ===  true，即on也为true，则存在on，而!loginWay === false，即on也为false
+     一旦点击密码登录，则把false赋值给loginWay，此时loginWay === false，即此时!loginWay === true，即on也为true，则存在on
+
+  4.给表单部分关于短信登录界面和密码登录界面的父元素分别强制绑定相应的样式
+  <div :class="{on: loginWay}"...>
+  <div :class="{on: !loginWay}"...>

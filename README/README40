@@ -1,0 +1,31 @@
+滑动效果分析
+
+当前分类
+当滑动右侧列表时，更新当前分类
+点击某个分类项，右侧列表滑动到对应位置
+
+标识当前分类的类名current
+设计一个计算属性：currentIndex
+根据哪些数据计算？
+    scrollY：右侧滑动的Y轴坐标 （滑动过程中实时变化）
+    tops：所有右侧分类li的top组成的数组 （列表第一次显示后就不再变化）
+
+1. 在右侧滑动过程中，实时收集scrollY
+2. 在列表第一次显示后，收集tops
+3. 实现currentIndex的计算逻辑
+
+html部分
+<li class="menu-item" v-for="(good, index) in goods" :key="index" :class="{current: index===currentIndex}">
+
+js部分
+data () {
+  return {
+    scrollY: 0, // 右侧滑动的Y轴坐标 （滑动过程中实时变化）
+    tops: [], // 所有右侧分类li的top组成的数组 （列表第一次显示后就不再变化）
+  }
+},
+
+ // 计算得到当前分类的下标
+currentIndex () {
+
+}

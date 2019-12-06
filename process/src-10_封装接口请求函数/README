@@ -1,0 +1,11 @@
+1. 在src-api-index.js内引入封装后的ajax
+    import ajax from './ajax'
+
+2. 根据API接口文档来封装接口请求函数
+ eg:
+ // 1、根据经纬度获取位置详情
+ export const reqAddress = (geohash) => ajax(`/position/40.10038,116.36867${geohash}`)
+ // 2、获取食品分类列表
+ export const reqFoodTypes = () => ajax('/index_category')
+ // 3、根据经纬度获取商铺列表
+ export const reqShops = (longitude, latitude) => ajax('/shop', {longitude, latitude})

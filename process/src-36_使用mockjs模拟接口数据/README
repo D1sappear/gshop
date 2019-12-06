@@ -1,0 +1,20 @@
+1. 下载mock.js
+    npm install --save mockjs
+
+    作用：拦截ajax请求，生成随机数据
+
+2. 创建mock模拟服务器组件
+    src-mock-mockServer
+
+    import Mock from 'mockjs' // 引入mockjs
+    import data from './data.json' // 引入写好的json文件
+
+    // 返回goods的接口
+    Mock.mock('/goods', {code: 0, data: data.goods})
+    // 返回ratings的接口
+    Mock.mock('/ratings', {code: 0, data: data.ratings})
+    // 返回info的接口
+    Mock.mock('/info', {code: 0, data: data.info})
+
+3. 在入口js中加载mock模拟服务器组件
+   import './mock/mockServer'

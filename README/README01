@@ -1,0 +1,116 @@
+1.项目源码目录设计
+    src
+        api 接口文件夹
+        common  通用资源文件夹
+        components 非路由组件文件夹
+        filter 过滤文件
+        mock 模拟接口数据文件夹
+        pages 路由组件文件夹
+        router 路由器文件夹
+        store(vuex) vuex相关模块文件夹
+        App.vue 应用组件
+        main.js 入口js
+
+2.Stylus ([ˈstaɪləs])
+    当前主流的三种css 预编译器(对比)
+    1) Less
+    2) Sass
+    3) Stylus
+
+  安装stylus 依赖包
+  npm install stylus stylus-loader --save-dev
+
+  在vue文件结构中添加
+  <style lang="stylus" rel="stylesheet/stylus">
+
+  在less样式撰写时可以忽略大括号，冒号和分号
+  父级引用
+  使用字符 & 指向父选择器
+
+3.分析应用的整体vue 组件结构
+    src
+        components
+            FooterGuide 底部导航组件文件夹
+              FooterGuide.vue 底部组件vue
+        pages
+            MSite(Home) 主页路由组件文件夹
+              MSite.vue 首页组件vue
+            Search 搜索页路由组件文件夹
+              Search.vue 搜索页组件vue
+            Order 订单路由组件文件夹
+              Order.vue 订单组件vue
+            Profile 个人中心路由组件文件夹
+              Profile.vue 个人中心组件vue
+    App.vue
+    main.js
+
+4.编写各部分组件的基本代码
+
+5.在gshop-index.html内引入字符图标链接和gshop-static-css-reset.css
+  修改viewport
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+  以及
+    <!-- 解决点击响应延时0.3s 问题 -->
+    <script src="https://as.alipayobjects.com/g/component/fastclick/1.0.6/fastclick.js"></script>
+      <script>
+        if ('addEventListener' in document) {
+          document.addEventListener('DOMContentLoaded', function() {
+          FastClick.attach(document.body);
+          }, false);
+        }
+        if(!window.Promise) {
+          document.writeln('<scriptsrc="https://as.alipayobjects.com/g/component/es6-promise/3.2.2/es6-promise.min.js"'+'>'+'<'+'/'+'script>');
+        }
+      </script>
+
+6.src-common-stylus-mixins.styl
+
+  $green = #02a774;
+  $yellow = #F5A100;
+  $bc = #e4e4e4;
+  // 一像素下边框
+  bottom-border-1px($color)
+    position relative
+    border none
+    &:after
+      content ''
+      position absolute
+      left 0
+      bottom 0
+      width 100%
+      height 1px
+      background-color $color
+      transform scaleY(0.5)
+  // 一像素上边框
+  top-border-1px($color)
+    position relative
+    &::before
+      content ''
+      position absolute
+      z-index 200
+      left 0
+      top 0
+      width 100%
+      height 1px
+      background-color $color
+  //根据像素比缩放1px 像素边框
+  @media only screen and (-webkit-device-pixel-ratio: 2 )
+    .border-1px
+      &::before
+        transform scaleY(.5)
+  @media only screen and (-webkit-device-pixel-ratio: 3 )
+    .border-1px
+      &::before
+        transform scaleY(.333333)
+  //根据像素比来使用2x 图3x 图
+  bg-image($url)
+    background-image: url($url + "@2x.png")
+    @media (-webkit-min-device-pixel-ratio: 3),(min-device-pixel-ratio: 3)
+      background-image: url($url + "@3x.png")
+  //清除浮动
+  clearFix()
+    *zoom 1
+    &::after
+      content ''
+      display block
+      clear both

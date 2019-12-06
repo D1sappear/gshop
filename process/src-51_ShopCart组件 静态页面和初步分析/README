@@ -1,0 +1,38 @@
+1. 创建src-components-ShopCart-ShopCart.vue
+     将静态代码和样式复制粘贴进来
+
+2. 在ShopGoods组件中引入ShopCart组件
+    import ShopCart from '../../../components/ShopCart/ShopCart'
+
+    components: {
+      ...,
+      ShopCart
+    }
+
+   <div class="goods">
+     <div class="menu-wrapper"...>
+     <div class="foods-wrapper"...>
+     <ShopCart />
+   </div>
+   <Food :food="food" ref="food" />
+
+3. 分析ShopCart组件需要的数据 怎么获取 通过vuex
+    ...mapState
+   (1) cartFoods 数组 购物车界面food数组
+   (2) info 商家配送费 起送价等
+
+   ...mapGetters
+   (1) totalCount
+   (2) totalPrice
+
+4. 在state.js中初始化cartFoods
+
+5. 在getters.js中定义 totalCount 和 totalPrice，分别是购物车列表的总数量和总列表
+   export default {
+     totalCount (state) {
+       return state.cartFoods.reduce((preTotal, food.count) => preTotal + food.count, 0)
+     },
+     totalPrice (state) {
+       return state.cartFoods.reduce((preTotal, food.count) => preTotal + food.count*food.price, 0)
+     },
+   }

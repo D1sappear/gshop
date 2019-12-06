@@ -1,0 +1,31 @@
+  打开src-pages-Shop-ShopInfo-ShopInfo.vue
+
+  1. 引入BScroll
+    import BScroll from '@better-scroll/core'
+
+    mounted () {
+      // 由于info数据是在该路由创建时就已经存在 所以不能使用监视属性
+      new BScroll('.shop-info')
+
+      new BScroll('.pic-wrapper', {
+        scrollX: true // 水平滑动
+      })
+    }
+
+  2. 由于外部容器ul宽度与图片宽度之和不一致而导致无法滑动
+     动态计算ul宽度
+     mounted () {
+       // 由于info数据是在该路由创建时就已经存在 所以不能使用监视属性
+       new BScroll('.shop-info')
+
+       const ul = this.$refs.picsUl // 给ul标签 添加标识ref='picsUl'
+       const liWidth = 120
+       const space = 6 // 外边距
+       const count = this.info.pics.length
+
+       ul.style.width = (liWidth + space) * count - space + 'px'
+
+       new BScroll('.pic-wrapper', {
+         scrollX: true // 水平滑动
+       })
+     }

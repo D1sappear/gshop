@@ -1,0 +1,18 @@
+  在ShopGoods组件中
+  1. 在分类项绑定点击监听
+    <li class="menu-item" v-for="(good, index) in goods" :key="index"
+        :class="{current: index===currentIndex}" @click="clickMenuItem(index)">
+
+  2. 定义方法clickMenuItem
+
+    clickMenuItem (index) {
+      console.log(index);
+      // 先得到目标位置的scrollY
+      const scrollY = this.tops[index]
+      // 立即更新scrollY(更新当前分类)
+      this.scrollY = scrollY // 左侧也实时改变
+      // 平滑滚动右侧列表
+      this.foodsScroll.scrollTo(0, -scrollY, 300)
+    }
+
+    为了方便获取foodsScroll，将上面const foodsScroll换成this.foodsScroll

@@ -1,0 +1,44 @@
+1. 使用mint-ui
+    npm install --save mint-ui
+
+    实现按需打包
+    (1) 下载
+    npm install --save-dev babel-plugin-component
+    (2) 修改gshop-.babelrc 配置
+    "plugins": ["transform-runtime",["component", [
+    {
+    "libraryName": "mint-ui",
+    "style": true
+    }
+    ]]]
+    (3) 在main.js中引入mint-ui
+    import {Button} from 'mint-ui'
+
+    // 注册全局组件标签
+    Vue.component(Button.name, Button) // <mt-button>
+
+2. 在Profile组件中
+     - html部分
+        在服务中心下方新增
+        <section class="profile_my_order border-1px">
+          <mt-button type="danger" style="width: 100%" v-if="userInfo._id" @click="logout">退出登录</mt-button>
+        </section>
+
+     - js部分
+        import {MessageBox, Toast} from 'mint-ui'
+
+        methods: {
+          logout () {
+            MessageBox.confirm('确认退出吗').then(
+              action => {
+                // 请求退出
+                this.$store.dispatch('logout')
+                Toast('退出成功')
+              },
+              action => {
+                console.log('点击了取消');
+              }
+            )
+          }
+        },
+

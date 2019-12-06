@@ -1,0 +1,51 @@
+1. 创建src-pages-Login-Login.vue
+    在静态页面中抽取静态代码和样式
+
+2. 在src-router-index.js中映射路由
+    import Login from '../pages/Login/Login'
+
+    {
+      path: '/login',
+      component: Login
+    },
+
+3. 在个人组件Profile中使用router-link来导航login路由组件 to='/login' 点击后会跳转到登录组件Login
+    <router-link to="/login" class="profile-link">
+      <div class="profile_image">
+        <i class="iconfont icon-person"></i>
+      </div>
+      <div class="user-info">
+        <p class="user-info-top">登录/注册</p>
+        <p>
+          <span class="user-icon">
+            <i class="iconfont icon-shouji icon-mobile"></i>
+          </span>
+          <span class="icon-mobile-number">暂无绑定手机号</span>
+        </p>
+      </div>
+      <span class="arrow">
+        <i class="iconfont icon-jiantou1"></i>
+      </span>
+    </router-link>
+
+    router-link会默认生成一个a标签 记得将class="profile-link"写在标签内
+
+4. Login组件内给箭头添加点击监听 实现回退功能 @click="$router.back()"
+    <a href="javascript:" class="go_back" @click="$router.back()">
+      <i class="iconfont icon-jiantou2"></i>
+    </a>
+
+5. 实现只在除了Login之外4个主路由界面显示FooterGuide
+    (1)在src-router-index.js中给需要显示FooterGuide的路由添加meta对象
+    eg：
+      {
+        path: '/profile',
+        component: Profile,
+        meta: {
+          showFooter: true
+        }
+      },
+
+    (2)在App.vue中给FooterGuide标签添加v-show或v-if属性
+    <FooterGuide v-show="$route.meta.showFooter"/> <!--$route表示当前路由-->
+    即只有当前路由有meta对象并且拥有showFooter属性且为true时才会显示

@@ -1,0 +1,27 @@
+1. 在ShopCart组件中引入CartControl
+    import CartControl from '../CartControl/CartControl'
+
+    components: {
+      CartControl
+    }
+
+    <div class="cartcontrol">
+      <CartControl :food="food"/>
+
+2. 将隐藏样式换成v-show，通过变量isShow来控制购物项列表的显示隐藏
+
+    <div class="shopcart-list" v-show="isShow"...>
+
+      // 这个是背景板
+    <div class="list-mask" v-show="isShow" @click="toggleShow"></div>
+
+3. 定义方法toggleShow来控制变量isShow
+    methods: {
+      toggleShow () {
+        this.isShow = !this.isShow
+      }
+    }
+
+  html部分
+
+  <div class="content-left" @click="toggleShow"...>

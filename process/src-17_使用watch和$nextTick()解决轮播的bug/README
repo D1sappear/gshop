@@ -1,0 +1,25 @@
+bug原因 轮播无法正常显示是因为swiper在数据和界面还没更新之前就被创建 而此时categorys是空数据
+解决方法
+1. 使用watch对categorys进行监视
+  watch: { // 监视
+    categorys (value) {
+
+    }
+  },
+
+2. 数据更新了但是界面还没更新也不行，所以要使用$nextTick()函数。该函数的回调函数会在界面完成更新后立即调用，
+   故而这条语句要写在数据更新之后
+   watch: { // 监视
+     categorys (value) {
+       this.$nextTick(() => { // $nextTick()函数的回调函数会在异步界面更新完成后就立即调用(这条语句要写在数据更新之后)
+         // 创建一个Swiper实例对象，来实现轮播
+         new Swiper('.swiper-container', {
+           loop: true, // 可以循环轮播
+           // 如果需要分页器
+           pagination: {
+             el: '.swiper-pagination'
+           }
+         })
+       })
+     }
+   },

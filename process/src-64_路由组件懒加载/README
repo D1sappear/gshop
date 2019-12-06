@@ -1,0 +1,16 @@
+  打开Shop组件
+  给router-link 标签加上replace 修复回退退不出界面的问题
+
+  打开src-router-index.js
+  // 4. 引入路由组件
+  // import MSite from '../pages/MSite/MSite'
+  // import Order from '../pages/Order/Order'
+  // import Search from '../pages/Search/Search'
+  // import Profile from '../pages/Profile/Profile'
+
+  const MSite = () => import('../pages/MSite/MSite') // 返回路由组件的函数，只有执行此函数才会加载路由组件，这个函数在请求对应的路由路径时才会执行
+  const Order = () => import('../pages/Order/Order')
+  const Search = () => import('../pages/Search/Search')
+  const Profile = () => import('../pages/Profile/Profile')
+
+  这样在请求路由时，js代码会被分割开来

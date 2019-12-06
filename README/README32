@@ -1,0 +1,31 @@
+1. 在Profile组件中
+    - html部分
+
+      修改前
+      <router-link to="/login" class="profile-link">
+      修改后
+      <router-link :to="userInfo._id ? '/userinfo' : '/login'" class="profile-link">
+
+2. 在MSite组件中
+    - html部分
+
+      修改前
+       <span class="header_search" slot="left" to="/search">
+         <i class="iconfont icon-sousuo"></i>
+       </span>
+       <span class="header_login" slot="right">
+         <span class="header_login_text" v-if="!userInfo._id">登录|注册</span>
+       </span>
+
+      修改后
+      <router-link class="header_search" slot="left" to="/search">
+        <i class="iconfont icon-sousuo"></i>
+      </router-link>
+      <router-link class="header_login" slot="right" :to="userInfo._id ? '/userinfo' : '/login'">
+        <span class="header_login_text" v-if="!userInfo._id">
+          登录|注册
+        </span>
+        <span class="header_login_text" v-else>
+          <i class="iconfont icon-person2"></i>
+        </span>
+      </router-link>

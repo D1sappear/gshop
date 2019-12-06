@@ -1,0 +1,58 @@
+1. 创建src-api-ajax.js和src-api-index.js
+
+2. 在src-api-ajax.js封装ajax函数
+   (1)下载引入axios
+        npm install --save axios
+
+        import axios from 'axios'
+   (2)封装ajax函数
+
+   // 未优化修改前
+   export default function ajax (url, data = {}, type = 'GET') {
+      let promise
+      if (type === 'GET') {
+        // query参数字符串
+        let dataStr = ''
+        Object.keys(data).forEach(key => {
+          dataStr += data + '=' + data[key] + '&'
+        })
+        if (dataStr !== '') {
+          dataStr = dataStr.substring(0, dataStr.lastIndexOf('&'))
+          url = url + '?' + dataStr
+        }
+        promise = axios.get(url)
+      } else {
+        promise = axios.post(url, data)
+      }
+      return promise
+   }
+
+   // 优化修改后
+   export default function ajax (url, data = {}, type = 'GET') {
+     return new Promise(function ( resolve, reject) {
+      // 发送异步ajax请求
+       let promise
+       if (type === 'GET') {
+         // query参数字符串
+         let dataStr = ''
+         Object.keys(data).forEach(key => {
+           dataStr += data + '=' + data[key] + '&'
+         })
+         if (dataStr !== '') {
+           dataStr = dataStr.substring(0, dataStr.lastIndexOf('&'))
+           url = url + '?' + dataStr
+         }
+         promise = axios.get(url)
+       } else {
+         promise = axios.post(url, data)
+       }
+     promise.then(function (response) {
+        // 成功了调用resolve()
+        resolve(response.data)
+     })
+      .catch(function (error) {
+        // 失败了调用reject()
+        reject(error)
+      })
+     })
+   }

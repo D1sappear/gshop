@@ -1,0 +1,23 @@
+  在页面直接刷新时报错，显示this.info.pics为undefined
+  这是因为直接刷新页面后 info还没获取
+
+  1. 增加条件判定，当this.info不存在时不创建BScroll对象
+      mounted() {
+        // 如果数据还没有，直接结束
+        if (!this.info.pics) {
+          return
+        }
+
+        // 说明数据已有，可以创建BScroll对象形成滑动
+
+        this._initScroll() // 这是创建BScroll对象的方法
+      },
+
+  2. 当数据还没获取时，使用监视
+      watch: { // 在本页面直接刷新时 --> 更新数据
+        info () {
+          this.$nextTick(() => {
+            this._initScroll() // 这是创建BScroll对象的方法
+          })
+        }
+      }

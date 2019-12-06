@@ -1,0 +1,9 @@
+1. 将主页路由组件MSite中商家列表的静态代码和样式剪切到
+   src-components-ShopList
+2. 将src-pages-MSite-images-shop&&stars 剪切到
+   src-components-ShopList-images
+
+3. 在MSite中引入ShopList
+   import ShopList from '../../components/ShopList/ShopList'
+
+   并在之前抽取静态代码的位置使用ShopList标签取代

@@ -1,0 +1,40 @@
+1. 安装better-scroll
+    npm install @better-scroll/core@next --save
+
+2. 在src-pages-Shop-ShopGoods-ShopGoods.vue中
+    引入better-scroll
+    import BScroll from '@better-scroll/core'
+
+3. 使用方法
+    let wrapper = document.querySelector('.`需要滚动内容的包裹器类名`')
+    let scroll = new BScroll(wrapper)
+
+4. 需要注意的是 创建BScroll的实例对象需要在界面数据更新之后
+    之前使用的方法是watch监视和$nextTick方法结合
+
+    除了这种方法之外，还可以在请求获取goods数据时，传递回调函数
+    在回调函数内使用$nextTick方法
+    再创建BScroll的实例对象
+      mounted () {
+        this.$store.dispatch('getShopGoods', () => {
+          this.$nextTick(() => { // 数据更新显示后执行
+            let wrapper1 = document.querySelector('.menu-wrapper')
+            let wrapper2 = document.querySelector('.foods-wrapper')
+            // 列表显示之后创建
+            new BScroll(wrapper1)
+            new BScroll(wrapper2)
+          })
+        })
+      },
+
+    传递的回调函数会被分发到actions组件里对应的函数保存
+      // 异步获取商家商品列表
+      async getShopGoods({commit}, cb) { // cb即为分发过来的回调函数
+        const result = await reqShopGoods()
+        if(result.code===0) {
+          const goods = result.data
+          commit(RECEIVE_GOODS, {goods})
+      // 如果组件中传递了接收消息的回调函数, 数据更新后, 调用回调通知调用的组件
+          cb && cb()
+        }
+      },

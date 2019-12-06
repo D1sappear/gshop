@@ -1,0 +1,84 @@
+  在ShopRatings组件中
+  1. 进一步完善动态数据显示
+   定义一个getter来返回rateType的值为0的rating数量
+
+   全部<span class="count">{{ratings.length}}</span>
+
+   满意<span class="count">{{positiveSize}}</span>
+
+   不满意<span class="count">{{ratings.length - positiveSize}}</span>
+
+   在getters.js中
+   positiveSize (state) {
+     // 如果 rating.rateType === 0 为true 则累计加1
+     return state.ratings.reduce((preTotal, rating) => preTotal + (rating.rateType === 0 ? 1 : 0) , 0)
+   }
+
+   2. 绑定点击监听，以及通过变量来控制样式改变
+    <div class="switch" :class="{on: onlyShowText}" @click="toggleOnlyShowText">
+
+    根据chrome插件提供的数据信息可知
+    rating中rateType值为0表示满意 1表示不满意
+    我们规定一个变量selectRateType 值为2时表示全部 0表示满意 1表示不满意
+
+    <div class="rating-type border-1px">
+      <span class="block positive" @click="setSelectRateType(2)" :class="{active: selectRateType === 2}">
+        全部<span class="count">{{ratings.length}}</span>
+      </span>
+      <span class="block positive" @click="setSelectRateType(0)" :class="{active: selectRateType === 0}">
+        满意<span class="count">{{positiveSize}}</span>
+      </span>
+      <span class="block negative" @click="setSelectRateType(1)" :class="{active: selectRateType === 1}">
+        不满意<span class="count">{{ratings.length - positiveSize}}</span>
+      </span>
+    </div>
+
+    data () {
+      return {
+        onlyShowText: true, // 只看带文本内容的
+        selectRateType: 2, // 值为2时表示全部 0表示满意 1表示不满意
+      }
+    }
+
+   4. 为了实现交互功能 需要通过一个计算属性来返回过滤后的数组
+    <li class="rating-item" v-for="(rating, index) in filterRatings" :key="index">
+
+    computed: {
+      ...,
+
+      filterRatings () {
+        // 得到相关的数据
+        const {onlyShowText, selectRateType, ratings} = this
+        // 产生一个过滤新数组
+        return ratings.filter(rating => {
+          // 获取所需数据
+          const {rateType,text} = rating
+          /*
+            条件1：
+              selectRateType：0/1/2
+              rateType: 0/1
+              selectRateType===2 || selectRateType===rateType
+            条件2：
+              onlyShowText: true/false
+              text: 有值/没值
+              !onlyShowText || text.length > 0
+          * */
+          /*if (selectRateType === 2) {
+            if (!onlyShowText) {
+              return rating
+            } else if (text.length > 0) {
+              return rating
+            }
+
+          } else if (selectRateType === rateType) {
+            if (!onlyShowText) {
+              return rating
+            } else if (text.length > 0) {
+              return rating
+            }
+          }*/
+
+          return (selectRateType === 2 || selectRateType === rateType) && (!onlyShowText || text.length > 0)
+        })
+      }
+    }

@@ -1,0 +1,18 @@
+1. 根据Chrome插件的vuex查看food的属性
+    一一修改数据
+
+    引入CartControl
+    import CartControl from '../CartControl/CartControl'
+
+    components: {
+      CartControl
+    }
+
+2. 添加动画效果
+   <transition>
+    <div class="food" v-if="isShow"...>
+   </transition>
+
+3. 解决冒泡导致的bug
+   给CartControl组件的点击监听都加上.stop
+

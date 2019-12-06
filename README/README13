@@ -1,0 +1,25 @@
+1. 创建src-store(vuex)-index.js //vuex最核心的管理对象store
+   创建src-store(vuex)-state.js //状态对象
+   创建src-store(vuex)-mutations.js //直接更新state多个方法对象
+   创建src-store(vuex)-actions.js //通过mutations间接更新state的多个方法的对象
+   创建src-store(vuex)-getters.js //包含多个基于state的getter计算属性的对像
+   创建src-store(vuex)-mutation-types.js //包含多个mutation的type名称常量
+
+2. 在src-store(vuex)-index.js中引入
+    import Vue from 'vue'
+    import Vuex from 'vuex'
+    import state from './state'
+    import mutations from './mutations'
+    import actions from './actions'
+    import getters from './getters'
+
+    // 声明使用插件vuex
+    Vue.use(Vuex)
+
+    // 暴露
+    export default new Vuex.Store({
+      state,
+      mutations,
+      actions,
+      getters
+    })

@@ -1,0 +1,10 @@
+1. 第一种解决方法是将配置里的probeType的值设定为3
+   此时当前分类的改变带动画
+
+2. 第二种解决方法是绑定scroll事件结束监听
+   foodsScroll.on("scrollEnd", ({x, y}) => {
+     console.log("scrollEnd", x, y)
+     this.scrollY = Math.abs(y)
+   })
+
+   这种是不带动画

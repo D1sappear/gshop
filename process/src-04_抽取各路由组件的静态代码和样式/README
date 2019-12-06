@@ -1,0 +1,6 @@
+1. 抽取各个路由组件的静态页面代码和样式分别粘贴
+     (1)创建src-pages-MSite-images 将resource里的nav、shop、stars粘贴进去，并修改MSite路由静态页面代码中的图片路径
+     (2)创建src-pages-Order-images 将resource-order-person.png粘贴进去 ，并修改Order路由静态页面代码中的图片路径
+
+2. 修改样式msite_header为header并复制，分别粘贴到另外三个路由样式内
+    MSite,Profile路由样式需要引入@import "../../common/stylus/mixins.styl"

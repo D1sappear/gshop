@@ -1,0 +1,63 @@
+1. 创建src-components-Food-Food.vue
+    将静态代码和样式复制粘贴进来
+
+2. 在ShopGoods组件中引入Food
+   import Food from '../../../components/Food/Food'
+
+   components: {
+     ...,
+     Food
+   }
+
+3. 查看样品网站 根据element结构显示插入Food组件
+    <div class="goods"...>
+    <Food :food="food" />
+
+    在Food组件中接收food
+    props: {
+      food: Object,
+    }
+
+4. Food组件肯定需要food信息 但是food信息在good部分里 所以需要在data中
+   定义一个 food: []，并在点击互动中声明一个函数来将food赋值给this.food
+
+5. 在ShopGoods组件中给good选项绑定点击监听
+   <li class="food-item bottom-border-1px" v-for="(food, index) in good.foods" :key="index" @click="showFood(food)"...>
+
+   methods: {
+     showFood (food) {
+       // 将food赋值给this.food
+       this.food = food
+
+       // 切换显示food组件(通过父组件调用子组件的方法来实现) 需要标识子组件
+
+     }
+   }
+
+   <Food :food="food" ref='food' />
+
+   methods: {
+     showFood (food) {
+       // 将food赋值给this.food
+       this.food = food
+
+       // 切换显示food组件(通过父组件调用子组件的方法来实现) 需要标识子组件
+       this.$refs.food.toggleShow()
+     }
+   }
+
+6. 在Food组件中定义toggleShow
+   先设定v-if判定变量isShow
+   <div class="food" v-if="isShow">
+
+   data () {
+     return {
+       isShow: false // 默认不显示
+     }
+   }
+
+   methods: {
+     toggleShow () {
+       this.isShow = !this.isShow
+     }
+   }

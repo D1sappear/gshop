@@ -1,0 +1,26 @@
+1. 在ShopCart中引入better-scroll
+    import BScroll from '@better-scroll/core'
+
+2. 创建BScroll对象
+    listShow () {
+      // 如果总数量为0 直接不显示
+      if (this.totalCount === 0) {
+        this.isShow = false
+        return false
+      }
+
+      if (this.isShow) {
+        this.$nextTick(() => {
+          // 实现BScroll的实例是一个单例
+          if (!this.scroll) {
+            const wrapper = document.querySelector('.list-content')
+            this.scroll = new BScroll(wrapper, {
+              click: true
+            })
+          } else {
+            this.scroll.refresh() // 让滚动条刷新一下：重新统计内容的高度
+          }
+        })
+      }
+      return this.isShow
+    },

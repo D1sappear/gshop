@@ -1,0 +1,68 @@
+1. 打开src-pages-Shop-ShopGoods-ShopGoods.vue
+    将静态代码和样式粘贴进来
+
+2. 获取和接收goods
+    import {mapState} from 'vuex'
+
+    export default {
+      mounted () {
+        this.$store.dispatch('getShopGoods')
+      },
+      computed: {
+        ...mapState(['goods'])
+      }
+    }
+
+3. 根据chrome的vue插件将数据动态展现出来
+      html部分
+
+      <div>
+          <div class="goods">
+            <div class="menu-wrapper" ref="menuWrapper">
+              <ul v-if="goods">
+                <!--   current   -->
+                <li class="menu-item" v-for="(good, index) in goods" :key="index">
+                  <span class="text bottom-border-1px">
+                    <img class="icon"
+                         :src="good.incon" v-if="good.incon">
+                    {{good.name}}
+                  </span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="foods-wrapper" ref="foodsWrapper">
+              <ul>
+                <li class="food-list-hook" v-for="(good, index) in goods" :key="index">
+                  <h1 class="title">{{good.name}}</h1>
+                  <ul>
+                    <li class="food-item bottom-border-1px" v-for="(food, index) in good.foods" :key="index">
+                      <div class="icon">
+                        <img width="57" height="57"
+                             :src="food.icon">
+                      </div>
+                      <div class="content">
+                        <h2 class="name">{{food.name}}</h2>
+                        <p class="desc">{{food.description}}</p>
+                        <div class="extra">
+                          <span class="count">月售{{food.sellCount}}份</span>
+                          <span>好评率{{food.rating}}%</span>
+                        </div>
+                        <div class="price">
+                          <span class="now">￥{{food.price}}</span>
+                          <span class="old" v-if="food.oldPrice">￥{{food.oldPrice}}</span>
+                        </div>
+                        <div class="cartcontrol-wrapper">
+                          CartControl
+                        </div>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        使用v-for来快速遍历创建 如若有报错Cannot read property 'xxx' of undefined或Cannot read property 'xxx' of null可以通过v-if来解决

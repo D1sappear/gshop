@@ -1,0 +1,16 @@
+ 1. 在src-filter中创建index.js
+     下载 npm install --save moment
+
+     import Vue from 'vue'
+     import moment from 'moment'
+
+     // 自定义过滤器
+     Vue.filter('date-format', function (value, formatStr='YYYY-MM-DD HH:mm:ss') {
+       return moment(value).format(formatStr)
+     })
+
+ 2. 在main.js中引入
+    import './filter' // 加载过滤器
+
+ 3. 在ShopRatings组件中使用
+    <div class="time">{{rating.rateTime | date-format}}</div>

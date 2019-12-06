@@ -1,0 +1,65 @@
+1. 在src-store(vuex)-state.js中
+   添加用户信息属性
+   export default {
+     latitude: 40.10038, // 纬度
+     longitude: 116.36867, // 经度
+     address: {}, // 地址相关信息对象
+     categorys: [], // 食品分类数组
+     shops: [], // 商家数组
+     userInfo: {}, // 用户信息
+   }
+
+2. 在src-store(vuex)-mutation-types.js中
+    添加接收用户信息常量
+    export const RECEIVE_USER_INFO = 'receive_user_info' // 接收用户信息
+
+3. 在src-store(vuex)-mutations.js中
+   添加方法 [RECEIVE_USER_INFO]
+
+   import {
+     RECEIVE_ADDRESS,
+     RECEIVE_CATEGORYS,
+     RECEIVE_SHOPS,
+     RECEIVE_USER_INFO
+   } from './mutation-types'
+
+   export default {
+     ...,
+     [RECEIVE_USER_INFO] (state, {userInfo}) {
+       state.userInfo = userInfo
+     },
+   }
+
+4. 在src-store(vuex)-actions中
+    添加同步记录用户信息action
+
+    // 同步记录用户信息
+    recordUser ({commit}, userInfo) {
+      commit(RECEIVE_USER_INFO, {userInfo})
+    }
+
+5. 在Login组件中
+    完善login方法
+
+    // 根据结果数据处理
+    if (result.code === 0) {
+      const user = result.data
+      // 将user保存到vuex的store
+      this.$store.dispatch('recordUser', user)
+      ....
+
+6. 个人中心组件Profile中
+    接收userInfo
+
+    - js部分
+    import {mapState} from 'vuex
+
+    computed: {
+      ...mapState(['userInfo'])
+    },
+
+    - html部分
+
+    <div class="user-info">
+      <p class="user-info-top">{{userInfo._id || '登录/注册'}}</p>
+      ....

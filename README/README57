@@ -1,0 +1,54 @@
+1. 创建src-pages-Shop-ShopRatings-ShopRatings.vue
+    将静态页面代码和样式引入
+
+2. 根据chrome插件提供的数据信息将页面数据进行动态显示
+    <div class="ratings-content">
+    <div class="overview">
+      <div class="overview-left">
+        <h1 class="score">{{info.score}}</h1>
+        <div class="title">综合评分</div>
+        <div class="rank">高于周边商家99%</div>
+      </div>
+      <div class="overview-right">
+        <div class="score-wrapper">
+          <span class="title">服务态度</span>
+          <Star :score="info.serviceScore" :size="36" />
+          <span class="score">{{info.serviceScore}}</span>
+        </div>
+        <div class="score-wrapper">
+          <span class="title">商品评分</span>
+          <Star :score="info.foodScore" :size="36" />
+          <span class="score">{{info.foodScore}}</span>
+        </div>
+        <div class="delivery-wrapper">
+          <span class="title">送达时间</span>
+          <span class="delivery">{{info.deliveryTime}}分钟</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="rating-wrapper">
+      <ul>
+        <li class="rating-item" v-for="(rating, index) in ratings" :key="index"> // 该遍历时就遍历
+          <div class="avatar">
+            <img width="28" height="28"
+                 :src="rating.avatar">
+          </div>
+          <div class="content">
+            <h1 class="name">{{rating.username}}</h1>
+            <div class="star-wrapper">
+              <Star :score="rating.score" :size="24" />
+              <span class="delivery" v-show="rating.deliveryTime">{{rating.deliveryTime}}</span>
+            </div>
+            <p class="text">{{rating.text}}</p>
+            <div class="recommend">
+              <span class="iconfont" :class="rating.rateType === 0 ? 'icon-thumb_up' : 'icon-thumb_down'"></span>
+              <span class="item" v-for="(recommend, index) in rating.recommend" :key="index">{{recommend}}</span> // 该遍历时就遍历
+            </div>
+            <div class="time">{{rating.rateTime}}</div>
+          </div>
+        </li>
+      </ul>
+    </div>
+

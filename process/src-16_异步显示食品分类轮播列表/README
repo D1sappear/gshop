@@ -1,0 +1,96 @@
+在src-pages-MSite-MSite.vue中
+    (1)调用请求食品分类action
+    mounted () {
+      this.$store.dispatch('getCategorys')
+
+      // 创建一个Swiper实例对象，来实现轮播
+      new Swiper('.swiper-container', {
+        loop: true, // 可以循环轮播
+        // 如果需要分页器
+        pagination: {
+          el: '.swiper-pagination'
+        }
+      })
+    },
+
+    (2)调用映射函数接收数据
+    ...mapState(['address', 'categorys'])
+
+    (3)在HTML部分
+        将带有类名swiper-slide的div删减至一个并进行遍历
+        <div class="swiper-slide" v-for="(categorys, index) in categorysArr" :key="index">
+        在这个div内将带有a标签删减至一个并进行遍历
+        <a href="javascript:" class="link_to_food" v-for="(category, index) in categorys" :key="index">
+
+    (4)在计算属性computed内 定义方法 categorysArr 这个方法返回一个arr
+        /*
+        根据categorys一维数组生成二维数组
+        小数组中的元素个数最大是8
+        * */
+        categorysArr () {
+          const {categorys} = this
+          // 准备一个空的二维数组
+          const arr = []
+          // 准备一个小数组 小数组中的元素个数最大是8
+          let minArr = []
+          // 遍历categorys
+          categorys.forEach(c => {
+            // 当小数组塞满8个时，新建一个小数组
+            if (minArr.length === 8) {
+              // 新建小数组
+              minArr = []
+            }
+            // 当小数组新建时，代表上一个小数组已经被塞满
+            if (minArr.length === 0) {
+              // 将上一个小数组塞进大数组里
+              arr.push(minArr)
+            }
+            // 将当前分类保存到小数组中
+            minArr.push(c)
+          })
+
+          return arr
+        }
+
+        通过已有的一维数组categorys转换成二维数组arr
+        逻辑分析
+        1. 将categorys从结构出来
+        const {categorys} = this
+        2. 建立一个空的二维数组，用以后面接收一维小数组
+        const arr = []
+        3. 声明一维小数组，由于一维小数组不止一个，需要重复建立故而声明时用let，小数组内元素个数不得超过8
+        let minArr = []
+        4. 遍历categorys拿到该数组内所有的元素
+        categorys.forEach(c => {
+          5. 条件判断 只有重新了建立的新的一维小数组，这个一维小数组才会通过判定被添加到二维数组里
+                      如果是先添加到二维数组里再建立新的一维小数组，
+                      此时minArr.length === 0 的判断将不会被触发，而新的一维小数组会不断的创建却不会添加到二维数组里
+                      在逻辑上不通
+          if (minArr.length === 8) {
+            6. 当一维小数组的元素个数为8时，重新建立新的一维小数组
+            minArr = []
+          }
+          if (minArr.length === 0) {
+            7. 当一维小数组的元素个数为0时，被添加到二维数组arr里
+            arr.push(minArr)
+          }
+          8. 将经过条件判断后的c添加到一维小数组里
+          minArr.push(c)
+        })
+        9. 返回arr
+        return arr
+
+    (5)查看源代码获取基本url并添加到data中
+    data () {
+      return {
+        baseImageUrl: 'https://fuss10.elemecdn.com'
+      }
+    },
+
+    (6)修改HTML部分的静态代码为动态
+    根据vue工具得到category的属性并进行拼串 对src进行强制绑定(动态)
+    <div class="food_container">
+      <img :src="baseImageUrl+category.image_url">
+    </div>
+    <span>{{category.title}}</span>
+

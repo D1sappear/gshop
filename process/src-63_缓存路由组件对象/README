@@ -1,0 +1,8 @@
+  打开src-pages-Shop-Shop.vue
+
+  给<router-view />标签套上
+  <keep-alive></keep-alive>标签
+
+  如果不缓存 那么goods一直是有vuex提供
+
+  只要切换路由 那么生命周期一结束再切换回来 又会是从vuex中获取数据

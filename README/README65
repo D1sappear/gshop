@@ -1,0 +1,18 @@
+ 1. 下载 npm install --save vue-lazyload
+
+ 2. 在main.js中引用
+  import VueLazyload from 'vue-lazyload'
+
+  import loading from './common/img/timg.gif' // 自己引入外部图片
+
+  Vue.use(VueLazyload, { // 内部自定义了一个指令lazy
+    loading
+  })
+
+ 3. 使用
+  打开Food组件
+  <img :src="food.image">
+  改成
+  <img v-lazy="food.image">
+
+ 当图片因不可预期的因素而不能及时加载时，就会显示引入的图片

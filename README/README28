@@ -1,0 +1,64 @@
+1. 打开容联云通讯 注册账号 号码管理 添加测试号码
+
+2. 打开 后台文件夹 - util - sms_util.js
+    根据云通讯控制台面板提供的 ACCOUNT_SID， AUTH_TOKEN， AppID 替换下面的代码。Rest_URL不变
+    function sendCode(phone, code, callback) {
+        var ACCOUNT_SID = '8a216da86e011fa3016eb121de1a6aea';
+        var AUTH_TOKEN = 'a2b2ca15296b486facbe162301a03833';
+        var Rest_URL = 'https://app.cloopen.com:8883';
+        var AppID = '8a216da86e011fa3016eb121de726af0';
+
+3. 打开Login组件，引入接口请求函数，并完善getCode
+
+   JS部分
+   import {reqLoginPwd, reqLoginSms, reqSendCode} from '../../api'
+
+   methods中
+   (1)要发送异步请求 在getCode前加上 async
+
+   (2)发送异步请求 调用reqSendCode
+   const result = await reqSendCode(this.phone)
+
+   (3)短信发送失败时要出现提示框
+    if (result.code === 1) { // 失败
+      // 显示提示
+      this.showAlert(result.msg) // 可以查看接口文档
+      // 停止倒计时
+      if (this.computeTime) {
+        this.computeTime = 0
+        clearInterval(this.IntervalId)
+        this.IntervalId = undefined
+      }
+    }
+
+   为了能得到IntervalId，将const IntervalId 改成 this.IntervalId
+
+
+   // 异步获取短信验证码
+   async getCode () {
+     // alert('-------')
+     // 如果当前没有计时
+     if (!this.computeTime) {
+       // 启动倒计时
+       this.computeTime = 30 // 设定总时间
+       // 循环定时器
+       this.IntervalId = setInterval(() => {
+         this.computeTime--
+         if (this.computeTime <= 0) {
+           clearInterval(this.IntervalId)
+         }
+       },1000)
+       // 发送ajax请求(向指定手机号发送验证码短信)
+       const result = await reqSendCode(this.phone)
+       if (result.code === 1) { // 失败
+         // 显示提示
+         this.showAlert(result.msg) // 可以查看接口文档
+         // 停止倒计时
+         if (this.computeTime) {
+           this.computeTime = 0
+           clearInterval(this.IntervalId)
+           this.IntervalId = undefined
+         }
+       }
+     }
+   },

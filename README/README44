@@ -1,0 +1,18 @@
+  在ShopGoods组件中
+  分析计算属性currentIndex所需要的条件和根据条件计算产生结果的逻辑，最后返回结果
+
+  js部分
+
+  currentIndex () {
+    // 所需要的条件
+    const {scrollY, tops} = this
+    // 根据条件计算产生结果
+    const index = tops.findIndex((top, index) => {
+      // scrollY 必须大于等于 当前top 并 小于下一个top
+      return scrollY >= top && scrollY < tops[index+1]
+    })
+    // 返回结果
+    return index
+  }
+
+  由于currentIndex变化 左边的当前分类也会随之改变

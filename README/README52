@@ -1,0 +1,77 @@
+    在ShopCart组件中
+    1. 根据样品资源可知
+    类名highlight存在与否控制着组件界面的一部分显示功能
+
+    而类名enough和not-enough则相对控制着另一部分显示功能
+
+    所以将拥有类名highlight的结构通过对象的方式来强制绑定class
+    :class={highlight === totalCount}
+
+    而enough和not-enough是相对控制显示
+    所以用一个计算属性payClass来强制绑定class
+    :class="payClass"
+
+    2. 右侧的文本显示一共有3种情况
+       分别是
+        totalPrice === 0时
+        `￥${}元起送`
+
+        totalPrice < info.minPrice
+        `还差￥${}元起送`
+
+        else
+        `去结算`
+
+        基于这三种情况，予以计算属性payText来解决
+
+    3. 定义计算属性
+
+       payClass () {
+         const {totalPrice} = this
+         const {minPrice} = this.info
+
+         return totalPrice > minPrice ? 'enough' : 'not-enough'
+       }
+
+       payText () {
+         const {totalPrice} = this
+         const {minPrice} = this.info
+
+         if (totalPrice === 0) {
+           return `￥${minPrice}元起送`
+         } else if (totalPrice < minPrice) {
+           return `还差￥${minPrice - totalPrice}元起送`
+         } else {
+           return `去结算`
+         }
+       }
+
+    4. 点击cartControl组件会调用mutation中的
+       INCREMENT_FOOD_COUNT
+       DECREMENT_FOOD_COUNT
+
+       打开src-store(vuex)-mutation
+       在[INCREMENT_FOOD_COUNT]中，当创建count时，将对象food添加到cartFoods中
+       此后food对象的属性发生变化，cartFoods也可见 反之同理
+
+       [INCREMENT_FOOD_COUNT] (state, {food}) {
+         ...
+           Vue.set(food, 'count', 1) // vue提供的方法 让原有数据绑定的对象新增属性(也有数据绑定) 记得引入vue
+           // 将food添加到cartFoods中
+           state.cartFoods.push(food)
+         } else {
+           food.count++
+         }
+       },
+
+       在[DECREMENT_FOOD_COUNT]中，当food.count === 0时，切断cartFoods与对象food的联系
+
+       [DECREMENT_FOOD_COUNT] (state, {food}) {
+         if (food.count) { // 只有有值才减
+           food.count--
+           if (food.count === 0) {
+             // 将food从cartFoods中移除
+             state.cartFoods.splice(state.cartFoods.indexOf(food), 1)
+           }
+         }
+       },

@@ -1,0 +1,70 @@
+  打开src-pages-Search-Search.vue
+
+  1. 复制粘贴静态代码和样式
+
+  2. 给input添加v-model
+      <input type="search" placeholder="请输入商家名称" class="search_input" v-model="keyword">
+
+  3. 获取searchShops
+
+    绑定点击监听
+    <form class="search_form" @submit.prevent="search">
+
+
+    methods: {
+      search () {
+        // 得到搜索的关键字
+        const keyword = this.keyword.trim()
+        // 进行搜索
+        if (keyword) {
+          this.$store.dispatch('getSearchShops', keyword)
+        }
+      }
+    },
+
+    import {mapState} from 'vuex'
+
+    computed: {
+      ...mapState(['searchShops'])
+    },
+
+  打开vuex文件进行getSearchShops定义配置准备
+  (1)state.js 添加属性 searchShops
+  (2)mutation-types.js 添加常量
+    export const RECEIVE_SEARCH_SHOPS = 'receive_search_shops' // 接收搜索商家数组
+  (3)mutations.js
+    [RECEIVE_SEARCH_SHOPS] (state, {searchShops}) {
+      state.searchShops = searchShops
+    },
+  (4)actions.js
+    引入reqSearchShops, RECEIVE_SEARCH_SHOPS
+    // 异步获取搜索商家列表
+    async getSearchShops ({commit, state}, keyword) {
+      const geohash = state.latitude + ',' + state.longitude
+      const result = await reqSearchShops(geohash, keyword)
+      if (result.code === 0) {
+        const searchShops = result.data
+        commit(RECEIVE_SEARCH_SHOPS, {searchShops})
+      }
+    },
+
+  4. 将页面的数据动态显示
+
+     添加data
+     imgBaseUrl: 'http://cangdu.org:8001/img/',
+     noSearchShops: false // 是否有商铺
+
+     <section class="list" v-if="!noSearchShops">
+
+     <div class="search_none" v-else>很抱歉！无搜索结果</div>
+
+  5. 利用监视属性调整noSearchShops的值实现显示隐藏
+     watch: {
+       searchShops (value) {
+         if (!value.length) {
+           this.noSearchShops = true
+         } else { // 有数据
+           this.noSearchShops = false
+         }
+       }
+     },

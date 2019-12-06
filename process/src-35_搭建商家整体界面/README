@@ -1,0 +1,94 @@
+1. 确定商家主界面Shop是一级路由，附带三个二级路由分别是ShopGoods，ShopRatings，ShopInfo
+    创建 src-pages-Shop-Shop
+    创建 src-pages-Shop-ShopGoods-ShopGoods
+    创建 src-pages-Shop-ShopRatings-ShopRatings
+    创建 src-pages-Shop-ShopInfo-ShopInfo
+
+2. 在src-router-index.js中映射路由
+    import Shop from '../pages/Shop/Shop'
+    import ShopGoods from '../pages/shop/ShopGoods/ShopGoods'
+    import ShopRatings from '../pages/shop/ShopRatings/ShopRatings'
+    import ShopInfo from '../pages/shop/ShopInfo/ShopInfo'
+
+    {
+      path: '/shop',
+      component: Shop,
+      children: [
+        {
+          path: '/shop/goods',
+          component: ShopGoods
+        },
+        {
+          path: '/shop/ratings',
+          component: ShopRatings
+        },
+        {
+          path: '/shop/info',
+          component: ShopInfo
+        },
+        {
+          path: '',
+          redirect: '/shop/goods'
+        }
+      ]
+    },
+
+3. 在ShopList组件中给商家选项绑定点击监听
+    html部分
+    <li class="shop_li border-1px" v-for="(shop, index) in shops" :key="index" @click="$router.push('/shop')">
+
+4. 在Shop组件中
+
+    html部分
+    <div>
+      <ShopHeader />
+      <div class="tab">
+        <div class="tab-item">
+          <router-link to="/shop/goods">点餐</router-link>
+        </div>
+        <div class="tab-item">
+          <router-link to="/shop/ratings">评价</router-link>
+        </div>
+        <div class="tab-item">
+          <router-link to="/shop/info">商家</router-link>
+        </div>
+      </div>
+      <router-view />
+    </div>
+
+    js部分
+    import ShopHeader from '../../components/ShopHeader/ShopHeader'
+    export default {
+      components: {
+        ShopHeader
+      }
+    }
+
+    css部分
+    引入recourse里面的样式
+    @import "../../common/stylus/mixins.styl"
+      .tab
+        height 40px
+        line-height 40px
+        background #fff
+        bottom-border-1px(rgba(7, 17, 27, 0.1))
+        .tab-item
+          float left
+          width: 33.33333%
+          text-align center
+          font-size 14px
+          color rgb(77, 85, 93)
+          a
+            display block
+            position relative
+            &.router-link-active
+              color #02a774
+              &::after
+                content ''
+                position absolute
+                left 50%
+                bottom 1px
+                width 35px
+                height 2px
+                transform translateX(-50%)
+                background #02a774

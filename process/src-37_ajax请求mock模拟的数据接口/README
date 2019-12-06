@@ -1,0 +1,96 @@
+1. 在src-api-index.js中定义mock模拟数据接口
+   // 请求商家商品
+   export const reqShopGoods = () => ajax('/goods')
+   // 请求商家评价
+   export const reqShopRatings = () => ajax('/ratings')
+   // 请求商家信息
+   export const reqShopInfo = () => ajax('/info')
+
+2. 定义store(vuex)组件
+   (1) src-store(vuex)-states.js中
+       export default {
+         goods: [], 商家商品数组
+         ratings: [], 商家评价数组
+         info: {}, 商家详情
+       }
+
+   (2) src-store(vuex)-mutation-types.js中
+       // 商家商品
+       export const RECEIVE_GOODS = 'receive_goods'
+       // 商家评价
+       export const RECEIVE_RATINGS = 'receive_ratings'
+       // 商家详情
+       export const RECEIVE_INFO = 'receive_info'
+
+   (3) src-store(vuex)-mutations.js中
+       import {
+         RECEIVE_GOODS,
+         RECEIVE_RATINGS,
+         RECEIVE_INFO
+       } from './mutation-types'
+
+       export default {
+         [RECEIVE_GOODS] (state, {goods}) {
+           state.goods = goods
+         },
+         [RECEIVE_RATINGS] (state, {ratings}) {
+           state.ratings = ratings
+         },
+         [RECEIVE_INFO] (state, {info}) {
+           state.info = info
+         },
+       }
+
+   (4) src-store(vuex)-actions.js中
+       import {
+         RECEIVE_GOODS,
+         RECEIVE_RATINGS,
+         RECEIVE_INFO
+       } from './mutation-types'
+
+       import {
+         reqShopGoods,
+         reqShopRatings,
+         reqShopInfo
+       } from '../../api'
+
+       export default {
+
+         // 异步请求商家详情
+         async getShopInfo ({commit}) {
+           const result = await reqShopInfo
+           if (result.code === 0) {
+             const info = result.data
+             commit(RECEIVE_INFO, {info})
+           }
+         },
+
+         // 异步请求商家商品
+         async getShopGoods ({commit}) {
+           const result = await reqShopGoods
+           if (result.code === 0) {
+             const goods = result.data
+             commit(RECEIVE_GOODS, {goods})
+           }
+         },
+
+         // 异步请求商家评价
+         async getShopRatings ({commit}) {
+           const result = await reqShopRatings
+           if (result.code === 0) {
+             const ratings = result.data
+             commit(RECEIVE_RATINGS, {ratings})
+           }
+         }
+
+       }
+
+3. 在src-pages-Shop-Shop.vue中
+
+     获取商家详情
+
+     export default {
+       mounted () {
+         this.$store.dispatch('getShopInfo')
+       }
+     }

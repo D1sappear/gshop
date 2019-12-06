@@ -1,0 +1,50 @@
+ 已知在列表第一次显示后收集
+ 定义一个方法
+ methods: {
+   _initTops () { // 下划线表示这不是事件相关的回调函数
+     // 初始化tops
+     const tops = []
+
+     let top = 0
+     tops.push(top)
+
+     // 收集
+     const lis = this.$refs.foodUl.getElementsByClassName('.food-list-hook') // 获取所有分类的li foodUl是包裹li的父级元素的标识
+     Array.prototype.slice.call(lis).forEach(li => { // 将lis伪数组转换成真数组
+      // 收集开始
+       top += li.clientHeight
+       tops.push(top)
+     })
+
+     // 更新tops
+     const tops = tops
+   }
+ }
+
+ 将初始化滚动也封装成方法
+ _initScroll () {
+   const wrapper1 = document.querySelector('.menu-wrapper')
+   const wrapper2 = document.querySelector('.food-wrapper')
+
+   new BScroll(wrapper1, {
+
+   })
+
+   const foodsScroll = new BScroll(wrapper2, {
+     probeType: 2
+   })
+
+   foodsScroll.on('scroll', ({x, y}) => {
+     console.log(x, y)
+     this.scrollY = Math.abs(y)
+   })
+ }
+
+ mounted () {
+   this.$store.dispatch('getShopGoods', () => {
+     this.$nextTick(() => {
+       _initScroll()
+       _initTops()
+     })
+   })
+ }

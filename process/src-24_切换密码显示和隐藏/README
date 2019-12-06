@@ -1,0 +1,38 @@
+1. 利用v-if和v-else来显示隐藏密码
+   再创建一个input标签，type类型分别为text和password，利用v-model监听同一个属性pwd
+   <input type="text" maxlength="8" placeholder="密码" v-if="showPwd" v-model="pwd">
+   <input type="password" maxlength="8" placeholder="密码" v-else v-model="pwd">
+
+2. 给显示隐藏按钮添加点击监听，初步实现隐藏显示的效果
+   <div class="switch_button off" @click="showPwd=!showPwd">
+
+3. 给按钮添加点击动画效果
+   (1)通过参照可以得到,当按钮样式有on时，底色为绿色，off为白色
+   利用三目表达式实现底色切换
+   <div class="switch_button" :class="showPwd ? 'on' : 'off' " @click="showPwd=!showPwd">
+
+   (2)文本效果
+   利用三目表达式实现文本切换
+   <span class="switch_text">{{showPwd ? 'abc' : '...'}}</span>
+
+   (3)圆圈动画效果
+   通过参照得知 right属性出现时，会出现动画效果，利用对象方法
+   <div class="switch_circle" :class="{right: showPwd}"></div>
+
+   找到样式switch_circle 并集 &.right
+   >.switch_circle
+     //transform translateX(27px)
+     position absolute
+     top -1px
+     left -1px
+     width 16px
+     height 16px
+     border 1px solid #ddd
+     border-radius 50%
+     background #fff
+     box-shadow 0 2px 4px 0 rgba(0,0,0,.1)
+     transition transform .3s
+     &.right
+       transform translateX(30px)
+
+     switch_circle中已经定义了过渡属性，所以只需要在right中定义过渡属性即可

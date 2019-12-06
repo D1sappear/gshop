@@ -1,0 +1,15 @@
+   查询better-scroll文档获取方法on的使用方法
+   需要Scroll实例对象来调用
+
+   在ShopGoods组件中
+   js部分
+   const foodsScroll = new BScroll(wrapper2, {
+     // 这里写配置
+     probeType: 2 // 默认0 不分发 1是按住滚动一定时间分发 2是实时分发 3是实时分发+滚动惯性分发
+   })
+
+   // 收集scrollY
+   foodsScroll.on('scroll', ({x, y}) => {
+     console.log(x, y) // 默认不分发滚动事件 需要配置
+     this.scrollY = Math.abs(y)
+   })

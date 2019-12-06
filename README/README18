@@ -1,0 +1,44 @@
+1. 在首页组件src-pages-MSite-MSite.vue中请求获取商家列表数据
+    mounted () {
+      this.$store.dispatch('getCategorys')
+      this.$store.dispatch('getShops')
+    },
+
+2. 打开src-components-ShopList-ShopList.vue
+    (1)接收数据
+    import {mapState} from 'vuex'
+
+    computed: {
+      ...mapState(['shops'])
+    }
+
+    (2)修改HTML部分
+    1. 将原有的静态代码删减至一份进行遍历
+    <div class="shop_container">
+        <ul class="shop_list">
+          <li class="shop_li border-1px" v-for="(shop, index) in shops" :key="index">
+    ....
+
+    2. 获取基本图片url
+    data () {
+      return {
+        baseImgUrl: 'http://cangdu.org:8001/img/'
+      }
+    },
+
+    3. 修改图片链接，强制绑定src
+    <div class="shop_left">
+      <img class="shop_img" :src="baseImgUrl + shop.image_path">
+    </div>
+
+    4. 右侧 “保 准 票” 部分，遍历shop中的supports属性
+    <section class="shop_detail_header">
+      <h4 class="shop_title ellipsis">{{shop.name}}</h4>
+      <ul class="shop_detail_ul">
+        <li class="supports" v-for="(support, index) in shop.supports" :key="index">{{support.icon_name}}</li>
+      </ul>
+    </section>
+
+    5. 将所有静态代码修改成动态显示
+    具体属性查看浏览器中vue工具内的数据显示
+

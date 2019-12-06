@@ -1,0 +1,55 @@
+1. 将Star组件的静态代码和样式从ShopList组件中抽取出来
+
+2. 创建scr-components-Star-Star.vue，将复制的代码和样式粘贴进去
+
+3. 将stars文件剪切到Star文件夹内，修改star.vue中样式关于图片的路径，引入mixin.styl
+     @import "../../common/stylus/mixins.styl"
+     .star{...} //2x图 3x图
+
+4. 在ShopList组件中引入Star，并进行映射
+    import Star from '../Star/Star'
+
+
+    components: {
+        Star
+      }
+
+5. 在ShopList组件中被抽取静态代码的HTML部分使用Star标签 并传过去score和size两个参数
+    <Star :score="shop.rating" :size="24" />
+
+6. Star组件中接收参数
+    props: {
+      score: Number,
+      size: Number
+    },
+
+7. 在Star组件HTML部分中进行简化
+    <div class="star" :class="'star-'+size">
+      <span class="star-item" v-for="(sc, index) in starClasses" :class="sc" :key="index"></span>
+    </div>
+
+8. 在Star组件中定义计算属性
+     定义在export default外
+     const CLASS_ON = 'on'
+     const CLASS_HALF = 'half'
+     const CLASS_OFF = 'off'
+
+
+     starClasses () {
+       const {score} = this
+       const scs = []
+       // 将n个'on'添加到数组scs里
+       const scoreInit = Math.floor(score)
+       for (let i=0 ; i < scoreInit; i++) {
+         scs.push(CLASS_ON)
+       }
+       // 将0/1个'half'添加到数组scs里
+       if (score*10 - scoreInit*10 > 5 ) {
+         scs.push(CLASS_HALF)
+       }
+       // 将n个'off'添加到数组scs里
+       while (scs.length < 5) {
+         scs.push(CLASS_OFF)
+       }
+       return scs
+     }

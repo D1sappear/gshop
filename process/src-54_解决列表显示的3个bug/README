@@ -1,0 +1,28 @@
+1. 购物项列表的显示隐藏还要考虑totalCount的值
+
+   将v-show由isShow控制修改成由计算属性listShow控制
+
+   listShow () {
+     if (this.totalCount === 0) {
+
+       return false
+     }
+
+     return this.isShow
+   }
+
+2. toggleShow () {
+     // 也要考虑totalCount的值
+     if (totalCount) { // 当totalCount大于0时
+       this.isShow = !this.isShow
+     }
+   }
+
+3. listShow () {
+     if (this.totalCount === 0) {
+       this.isShow = false // 否则在主页面点击加号，并在购物项列表删除，再次于主页面点击加号会一直显示购物项列表
+       return false
+     }
+
+     return this.isShow
+   }

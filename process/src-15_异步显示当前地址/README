@@ -1,0 +1,51 @@
+1. 利用vuex里的映射函数mapAction可以调用getAddress
+    (1)在App.vue中引入
+      import {mapActions} from 'vuex' // 映射函数mapActions
+
+    (2)调用映射函数，添加方法
+    export default {
+
+      mounted () {
+        // this.$store.dispatch('getAddress')
+        this.getAddress()
+      },
+
+      methods: {
+        ...mapActions(['getAddress'])
+      },
+
+      components: {
+        FooterGuide
+      }
+    }
+
+2. 利用vuex里的映射函数mapState读取状态state
+    (1)在首页组件MSite中引入
+    import {mapState} from 'vuex'
+
+    (2)调用映射函数，添加计算属性
+    export default {
+      mounted () {
+        // 创建一个Swiper实例对象，来实现轮播
+        new Swiper('.swiper-container', {
+          loop: true, // 可以循环轮播
+          // 如果需要分页器
+          pagination: {
+            el: '.swiper-pagination'
+          }
+        })
+      },
+      computed: {
+        ...mapState(['address'])
+      },
+      components: {
+        HeaderTop,
+        ShopList
+      }
+    }
+
+    此时可以在HTML部分直接使用address对象及其属性 注意强制绑定
+
+    (3)在HTML部分
+    <!--首页头部-->
+        <HeaderTop :title="address.name"> //使用:对title进行强制绑定

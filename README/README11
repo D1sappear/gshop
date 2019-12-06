@@ -1,0 +1,25 @@
+1. 生成本地仓库
+   (1)在npm中输入 git init
+   (2)在npm中输入 git add *
+   (3)在npm中输入 git commit -m "init gshop"
+
+   如果没有git先在淘宝镜像下载git，并配置系统环境 需要配置bin和git-core的路径到path中
+   然后在File | Settings | Version Control 中找到git进行配置 一般是git/cmd/git.exe
+   然后点击test 会显示git版本号 提示成功
+   在File | Settings | Version Control 中找到github登录
+   重启webstorm
+
+2. 生成github远程仓库
+    (1)指定仓库名字和介绍
+
+    (2)创建成功复制页面第一个框中 git remote add origin ... 这一行
+
+3. 使用git对项目进行版本控制
+    (1)将复制的代码在npm中输入建立本地与远程仓库的联系
+    (2)在npm中输入 向远程仓库输出本地仓库的项目
+        git push origin master
+
+4. 需要更新后续代码
+    (1)git add *
+    (2)git commit -m "init gshop"
+    (3)git push origin master

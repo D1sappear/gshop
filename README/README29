@@ -1,0 +1,129 @@
+   在Login组件中 完善异步登录函数login
+    (1) 发送ajax请求短信/密码登录
+    // 异步登录
+    async login () {
+      let result
+      // 前台表单验证
+      // 区别登录方式
+      if (this.loginWay) { // 短信登录
+        const {rightPhone, phone, code} = this
+        if (!rightPhone) {
+          // 手机号不正确
+          this.showAlert('手机号不正确')
+          return
+        } else if (!/^\d{6}$/.test(code)) {
+          // 验证码必须是6位数字
+          this.showAlert('验证码必须是6位数字')
+          return
+        }
+        // 发送ajax请求短信登录
+        result = await reqLoginSms(phone, code)
+
+
+      } else { // 密码登录
+        const {name, pwd, captcha} = this
+        if (!name) {
+          // 用户名必须指定
+          this.showAlert('用户名必须指定')
+          return
+        } else if (!pwd) {
+          // 密码必须指定
+          this.showAlert('密码必须指定')
+          return
+        } else if (!captcha) {
+          // 验证码必须指定
+          this.showAlert('验证码必须指定')
+          return
+        }
+        // 发送ajax请求短信登录
+        result = await reqLoginPwd({name, pwd, captcha})
+      }
+
+      // 根据结果数据处理
+      if (result.code === 0) {
+        const user = result.data
+
+      } else {
+        const msg = result.msg
+
+      }
+    },
+
+    (2) 处理后续
+
+    - 改进getCaptcha函数
+       - html部分
+         <img class="get_verification"
+              src="http://localhost:4000/captcha"
+              alt="captcha"
+              @click="getCaptcha"
+              ref="captcha"
+         >
+       给验证码图片添加ref属性，值为captcha
+
+       - js部分
+       getCaptcha () {
+         this.$refs.captcha.src = 'http://localhost:4000/captcha?time=' + Date.now()
+       }
+
+    - 调用showAlert， getCaptcha进一步完善后续处理
+
+    async login () {
+      let result
+      // 前台表单验证
+      // 区别登录方式
+      if (this.loginWay) { // 短信登录
+        const {rightPhone, phone, code} = this
+        if (!rightPhone) {
+          // 手机号不正确
+          this.showAlert('手机号不正确')
+          return
+        } else if (!/^\d{6}$/.test(code)) {
+          // 验证码必须是6位数字
+          this.showAlert('验证码必须是6位数字')
+          return
+        }
+        // 发送ajax请求短信登录
+        result = await reqLoginSms(phone, code)
+
+
+      } else { // 密码登录
+        const {name, pwd, captcha} = this
+        if (!name) {
+          // 用户名必须指定
+          this.showAlert('用户名必须指定')
+          return
+        } else if (!pwd) {
+          // 密码必须指定
+          this.showAlert('密码必须指定')
+          return
+        } else if (!captcha) {
+          // 验证码必须指定
+          this.showAlert('验证码必须指定')
+          return
+        }
+        // 发送ajax请求短信登录
+        result = await reqLoginPwd({name, pwd, captcha})
+      }
+
+      // 停止倒计时
+      if (this.computeTime) {
+        this.computeTime = 0
+        clearInterval(this.IntervalId)
+        this.IntervalId = undefined
+      }
+      // 根据结果数据处理
+      if (result.code === 0) {
+        const user = result.data
+        // 将user保存到vuex的store
+
+        // 去个人中心界面
+        this.$router.replace('/profile')
+      } else {
+        // 验证失败刷新验证码
+        this.getCaptcha()
+        // 显示警告提示
+        const msg = result.msg
+        this.showAlert(msg)
+      }
+    },

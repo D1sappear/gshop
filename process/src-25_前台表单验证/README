@@ -1,0 +1,126 @@
+1. 在登录组件Login中将表单部分的input设定监听属性，记得对应接口
+    <input type="tel" maxlength="8" placeholder="验证码" v-model="code">
+    <input type="text" maxlength="11" placeholder="手机/邮箱/用户名" v-model="name">
+    <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
+
+    data () {
+        return {
+          loginWay: true, // true代表短信登录， false代表密码登录
+          phone: '', // 手机号码
+          computeTime: 0, // 计时的时间
+          showPwd: false, // 是否显示密码
+          pwd: '', // 密码
+          code: '', // 短信验证码
+          name: '', // 用户名
+          captcha: '', // 图形验证码
+        }
+      }
+
+2. 给表单绑定submit监听
+    <form @submit.prevent="login">
+
+    在methods中定义
+    login () {
+      // 前台表单验证
+      // 区别登录方式
+      if (this.loginWay) { // 短信登录
+        const {rightPhone, phone, code} = this
+        if (!rightPhone) {
+          // 手机号不正确
+
+        } else if (!/^\d{6}$/.test(code)) {
+          // 验证码必须是6位数字
+        }
+
+      } else { // 密码登录
+        const {name, pwd, captcha} = this
+        if (!name) {
+          // 用户名必须指定
+
+        } else if (!pwd) {
+          // 密码必须指定
+
+        } else if (!captcha) {
+          // 验证码必须指定
+
+        }
+      }
+    }
+
+3. 创建提示框组件src-components-AlertTip-AlertTip
+   代码在资源中有，赋值粘贴过去
+   (1) 查看js部分接收的属性 alertText
+   (2) 查看js部分定义的方法中 分发的自定义事件 closeTip
+
+4. 在Login组件中引入AlertTip，使用AlertTip标签并传入属性 alertText 和自定义事件 closeTip
+    (1)
+    import AlertTip from '../../components/AlertTip/AlertTip'
+    components: {
+      AlertTip
+    }
+
+    (2)
+    HTML部分
+      <section class="loginContainer">
+        <div class="loginInner"...>
+        <AlertTip :alertText="alertText" v-show="alertShow" @closeTip="closeTip" />
+
+    (3)
+    JS部分
+    data () {
+      return {
+        loginWay: true, // true代表短信登录， false代表密码登录
+        phone: '', // 手机号码
+        computeTime: 0, // 计时的时间
+        showPwd: false, // 是否显示密码
+        pwd: '', // 密码
+        code: '', // 短信验证码
+        name: '', // 用户名
+        captcha: '', // 图形验证码
+        alertText: '', // 提示文本
+        alertShow: false, // 是否显示提示框
+      }
+    },
+
+    methods中
+    closeTip () {
+      this.alertShow = false // 不显示提示框
+      this.alertText = '' // 清空提示文本
+    }
+
+    (4) 完善login ()
+
+    抽取一个共用方法
+    showAlert (alertText) {
+      this.alertShow = true
+      this.alertText = alertText
+    }
+
+
+    login () {
+      // 前台表单验证
+      // 区别登录方式
+      if (this.loginWay) { // 短信登录
+        const {rightPhone, phone, code} = this
+        if (!rightPhone) {
+          // 手机号不正确
+          this.showAlert('手机号不正确')
+        } else if (!/^\d{6}$/.test(code)) {
+          // 验证码必须是6位数字
+          this.showAlert('验证码必须是6位数字')
+        }
+
+      } else { // 密码登录
+        const {name, pwd, captcha} = this
+        if (!name) {
+          // 用户名必须指定
+          this.showAlert('用户名必须指定')
+        } else if (!pwd) {
+          // 密码必须指定
+          this.showAlert('密码必须指定')
+        } else if (!captcha) {
+          // 验证码必须指定
+          this.showAlert('验证码必须指定')
+        }
+      }
+    }

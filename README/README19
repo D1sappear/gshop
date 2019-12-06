@@ -1,0 +1,18 @@
+使用v-if和v-else来对MSite和ShopList组件进行改进
+1. 打开src-pages-MSite-MSite.vue
+   (1)在HTML部分导航代码添加v-if
+   <div class="swiper-container" v-if="categorys.length"...>
+   (2)在div下面添加img标签(需要先将svg文件复制到相应的路径)
+   <img src="./images/msite_back.svg" alt="back" v-else>
+
+   即可实现当v-if部分还没加载完成时先加载v-else部分
+
+2. 打开src-components-ShopList-ShopList.vue
+   (1)在HTML部分代码添加v-if
+   <ul class="shop_list" v-if="shops.length"...>
+   (2)在ul下面添加新的ul标签并，并把img标签放在li内，再进行遍历
+   <ul v-else>
+     <li v-for="item in 6">
+       <img src="./images/shop_back.svg" alt="back">
+     </li>
+   </ul>

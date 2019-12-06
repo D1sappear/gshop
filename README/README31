@@ -1,0 +1,12 @@
+在个人中心Profile组件中
+   - html部分
+      找到登录注册和手机号部分
+
+      // 当手机号不存在时才显示用户名
+      <p class="user-info-top" v-if="!userInfo.phone">{{userInfo.name || '登录/注册'}}</p>
+      <p>
+        <span class="user-icon">
+          <i class="iconfont icon-shouji icon-mobile"></i>
+        </span>
+        // 手机号存在时，用户名所在的p标签自动隐藏
+        <span class="icon-mobile-number">{{userInfo.phone || '暂无绑定手机号'}}</span>

@@ -1,0 +1,29 @@
+1. 创建src-components-CartControl-CartControl.vue
+    复制粘贴静态代码和样式
+
+2. 在ShopGoods组件中引入CartControl组件
+   并传递属性food
+
+   import CartControl from '../../../components/CartControl/CartControl'
+
+   components: {
+     CartControl
+   }
+
+   <div class="cartcontrol-wrapper">
+     <CartControl :food="food" />
+   </div>
+
+3. 在CartControl组件中接收food
+
+   prop: {
+     food: Object
+   }
+
+   修改静态代码动态显示
+
+   <div class="cartcontrol">
+     <div class="iconfont icon-remove_circle_outline" v-if="food.count"></div>
+     <div class="cart-count" v-if="food.count">{{food.count}}</div>
+     <div class="iconfont icon-add_circle"></div>
+   </div>

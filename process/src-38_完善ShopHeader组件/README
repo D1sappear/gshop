@@ -1,0 +1,119 @@
+1. 将静态代码和样式粘贴进去
+
+2. 接收info
+   import {mapState} from 'vuex'
+
+   export default {
+     computed: {
+       ...mapState(['info'])
+     }
+   }
+
+3. 隐藏次级界面
+   <div class="shop-brief-modal" style='display: none'...>
+   <div class="activity-sheet" style='display: none'...>
+
+4. 将样式中的背景图删去，在HTML部分添加强制绑定style实现动态展现
+    <nav class="shop-nav" :style="{backgroundImage: `url(${info.bgImg})`}"...>
+
+    头像路径引入也实现动态展现
+    <img class="content-image"
+         :src="info.avatar">
+
+5. 实现回退的交互功能
+    <nav class="shop-nav" :style="{backgroundImage: `url(${info.bgImg})`}">
+       <a class="back" @click="$router.back()"...>
+
+6. 将主页面的数据动态展现
+   定义一个包含三个类名的数组
+   data () {
+     return {
+       supportClasses: [
+         'activity-green',
+         'activity-red',
+         'activity-orange'
+       ]
+     }
+   }
+
+   HTML部分
+    <div class="shop-content">
+      <img class="content-image"
+           :src="info.avatar">
+      <div class="header-content">
+        <h2 class="content-title">
+          <span class="content-tag">
+            <span class="mini-tag">品牌</span>
+          </span>
+          <span class="content-name">{{info.name}}</span>
+          <i class="content-icon"></i>
+        </h2>
+        <div class="shop-message">
+          <span class="shop-message-detail">{{info.score}}</span>
+          <span class="shop-message-detail">月售{{info.sellCount}}单</span>
+          <span class="shop-message-detail">
+            {{info.description}}
+            <span>约{{info.deliveryTime}}分钟</span>
+          </span>
+          <span class="shop-message-detail">距离{{info.distance}}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="shop-header-discounts" v-if="info.supports">
+      <div class="discounts-left">
+        <div class="activity" :class="supportClasses[info.supports[0].type]">
+          <span class="content-tag">
+            <span class="mini-tag">{{info.supports[0].name}}</span>
+          </span>
+          <span class="activity-content ellipsis">{{info.supports[0].content}}</span>
+        </div>
+      </div>
+      <div class="discounts-right">
+        {{info.supports.length}}个优惠
+      </div>
+    </div>
+
+7. 实现点击切换显示次级页面的交互
+   定义两个值为布尔值的变量
+   data () {
+     return {
+       shopShow: false, // 商家次级页面是否显示
+       supportShow: false // 商家活动次级页面是否显示
+     }
+   }
+
+   定义切换变量值的方法
+   methods: {
+     toggleShopShow () {
+       this.shopShow = !this.shopShow
+     },
+     toggleSupportShow () {
+       this.supportShow = !this.supportShow
+     },
+   }
+
+   HTML部分
+   利用v-show和绑定点击监听实现次级页面切换显示
+
+   <div class="shop-content" @click="toggleShopShow"...>
+   <div class="shop-brief-modal" v-show="shopShow"...>
+
+   <div class="shop-header-discounts" v-if="info.supports" @click="toggleSupportShow"...>
+   <div class="activity-sheet" v-show="supportShow"...>
+
+8. 将次级页面的数据动态展现
+
+   在商家活动的次级页面利用v-for对li标签进行遍历即可
+
+9. 实现切换的动画效果
+   将
+    <div class="shop-brief-modal" v-show="shopShow"...>
+    <div class="activity-sheet" v-show="supportShow"...>
+   分别包裹进<transition name='fade'></transition>里
+
+   在类名"shop-brief-modal"和"activity-sheet"的样式下添加并集样式
+   &.fade-enter-active,&.fade-leave-active
+     transition opacity .5s
+   &.fade-enter,&.fade-leave-to
+     opacity 0

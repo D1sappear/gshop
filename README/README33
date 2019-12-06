@@ -1,0 +1,29 @@
+1. 在src-store(vuex)-actions.js中
+
+    js部分
+
+    引入reqUserInfo
+    import {..., reqUserInfo} from '../api'
+
+    声明一个异步获取用户信息action
+    async getUserInfo ({commit}) {
+      const result = await reqUserInfo()
+      if (result.code === 0) {
+        const userInfo = result.data
+        commit(RECEIVE_USER_INFO, {userInfo})
+      }
+    }
+
+2. 在App.vue中
+    接收调用 getUserInfo
+
+    js部分
+
+    methods: {
+      ...mapActions(..., 'getUserInfo'])
+    },
+
+     mounted () {
+      ...
+      this.getUserInfo()
+    },

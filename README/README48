@@ -1,0 +1,59 @@
+  在CartControl组件中
+  1. 给两个按钮绑定点击监听 因为是针对一个Number属性 所以可以通过同一个方法来改变
+     <div class="iconfont icon-remove_circle_outline" v-if="food.count" @click="updateFoodCount(false)"></div>
+     <div class="iconfont icon-add_circle" @click="updateFoodCount(true)"></div>
+
+  2. 定义方法updateFoodCount
+     updateFoodCount (isAdd) {
+       // 由于不能在这个组件中直接改变food中count的属性值 所以需要通过vuex来处理
+       this.$store.dispatch('updateFoodCount', {isAdd, food: this.food})
+     }
+
+  3. 在actions组件中定义
+    同步action
+    updateFoodCount ({commit}, {isAdd, food}) {
+
+    }
+
+  4. 在mutation-types组件中定义
+    export const INCREMENT_FOOD_COUNT = 'increment_food_count'
+    export const DECREMENT_FOOD_COUNT = 'decrement_food_count'
+
+  5. 完善同步action
+    引入
+    import {
+      INCREMENT_FOOD_COUNT,
+      DECREMENT_FOOD_COUNT
+    } from './mutation-types'
+
+    updateFoodCount ({commit}, {isAdd, food}) {
+      if (isAdd) {
+        commit(INCREMENT_FOOD_COUNT, {food})
+      } else {
+        commit(DECREMENT_FOOD_COUNT, {food)
+      }
+    }
+
+  6. 在mutation组件中定义
+    引入
+    import Vue from 'vue'
+
+    import {
+      INCREMENT_FOOD_COUNT,
+      DECREMENT_FOOD_COUNT
+    } from './mutation-types'
+
+    [INCREMENT_FOOD_COUNT] (state, {food}) {
+      if (!food.count) { // 第一次创建
+        // 使用vue提供的set方法给原有数据绑定的对象添加属性 使用food.count = 1添加属性没有数据绑定 页面不会显示
+        // 参数顺序 对象 属性名 属性值
+        Vue.set(food, 'count', 1)
+      } else {
+        food.count++
+      }
+    },
+    [DECREMENT_FOOD_COUNT] (state, {food}) {
+      if (food.count) { // 由于food.count不存时，页面不会显示按钮 所以仅需要防止连击过快的导致出现负数的情况
+        food.count--
+      }
+    },
